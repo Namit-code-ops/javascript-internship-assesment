@@ -1,0 +1,364 @@
+
+/* ========================================
+   Product Inventory & Analytics Dashboard
+   JavaScript Internship Capstone Project
+   ======================================== */
+
+/* 1. Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #1d4ed8;
+    --primary-dark: #1e3a8a;
+    --background: #f1f5f9;
+    --surface: #ffffff;
+    --text: #172033;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --success: #15803d;
+    --radius: 14px;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* 2. Header */
+header {
+    background: linear-gradient(
+        135deg,
+        var(--primary-dark),
+        var(--primary)
+    );
+    color: white;
+    padding: 34px 20px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(30, 58, 138, 0.15);
+}
+
+header h1 {
+    font-size: clamp(25px, 4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+}
+
+header p {
+    color: #dbeafe;
+    font-size: 15px;
+}
+
+/* 3. Main layout */
+main {
+    width: min(1100px, 92%);
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 4. Panels */
+.panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.panel h2 {
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--text);
+}
+
+/* 5. Product form */
+#productForm {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+#productForm label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 4px;
+}
+
+#productForm input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: #ffffff;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#productForm input::placeholder {
+    color: #94a3b8;
+}
+
+#productForm input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* 6. Buttons */
+button {
+    display: inline-block;
+    width: fit-content;
+    max-width: 100%;
+    margin-top: 10px;
+    padding: 11px 20px;
+    border: none;
+    border-radius: 9px;
+    background: var(--primary);
+    color: white;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* 7. Status messages */
+#message,
+#searchResult {
+    margin-top: 12px;
+    color: var(--success);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+/* 8. Analytics cards */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--primary);
+}
+
+.stat-card h3 {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.stat-card p {
+    color: var(--primary-dark);
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 9. Inventory table */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+thead {
+    background: #eff6ff;
+}
+
+th {
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+th,
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+td {
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 10. Product category badges */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.badge.budget {
+    color: #166534;
+    background: #dcfce7;
+}
+
+.badge.standard {
+    color: #92400e;
+    background: #fef3c7;
+}
+
+.badge.premium {
+    color: #1e40af;
+    background: #dbeafe;
+}
+
+/* 11. Affordable products and report */
+#affordableProducts,
+#formattedReport {
+    padding-left: 22px;
+}
+
+#affordableProducts li,
+#formattedReport li {
+    padding: 9px 0;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+#affordableProducts li:last-child,
+#formattedReport li:last-child {
+    border-bottom: none;
+}
+
+#formattedReport {
+    font-family: Consolas, "Courier New", monospace;
+}
+
+/* 12. Footer */
+footer {
+    margin-top: 38px;
+    padding: 22px 16px;
+    background: #0f172a;
+    color: #cbd5e1;
+    text-align: center;
+    font-size: 13px;
+}
+
+/* 13. Tablet layout */
+@media (max-width: 768px) {
+    main {
+        width: 94%;
+        margin: 22px auto;
+        gap: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .panel {
+        padding: 20px;
+    }
+}
+
+/* 14. Mobile layout */
+@media (max-width: 480px) {
+    header {
+        padding: 26px 15px;
+    }
+
+    header p {
+        font-size: 13px;
+    }
+
+    main {
+        width: 94%;
+        margin: 16px auto;
+    }
+
+    .panel {
+        padding: 16px;
+        border-radius: 11px;
+    }
+
+    .panel h2 {
+        font-size: 18px;
+    }
+
+    th,
+    td {
+        padding: 11px 12px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
